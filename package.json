@@ -24,10 +24,12 @@
     "url": "git+ssh://git@github.com/lampropoi/todolist-be.git"
   },
   "scripts": {
-    "test": "eslint"
+    "test": "eslint",
+    "start": "nodemon ./app.js localhost 8080"
   },
   "devDependencies": {
     "eslint": "^2.2.0",
-    "eslint-config-google": "^0.4.0"
+    "eslint-config-google": "^0.4.0",
+    "nodemon": "^1.9.0"
   }
 }
