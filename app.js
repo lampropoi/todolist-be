@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var Duty = require('./models/todolist.js');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -26,3 +28,6 @@ app.use('/v1', router);
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);
+
+// Connect to DB
+mongoose.connect('mongo ds035543.mongolab.com:35543/todolistdb -u <todolistdb> -p <todolistdb!>'); //
