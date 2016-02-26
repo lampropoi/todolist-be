@@ -12,6 +12,12 @@
     "express": "^4.13.4",
     "mongoose": "^4.4.5"
   },
+  "devDependencies":{
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-jasmine": "^0.3.7"
+  },
   "homepage": "https://github.com/lampropoi/todolist-be#readme",
   "keywords": [
     "list",
@@ -26,6 +32,7 @@
   },
   "scripts": {
     "test": "eslint",
+    "karmatest": "./node_modules/karma/bin/karma start karma.conf.js",
     "start": "nodemon ./app.js localhost 8080",
     "apidoc": "apidoc -f 'app.js$' ./ -o ./doc"
   },
