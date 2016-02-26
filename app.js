@@ -22,7 +22,6 @@ var router = express.Router();
  * [Add a new todo in the list]
  * @api  {post} /todos/add Add a new todo in the list
  * @apiParam {String} description The description of the todo
- * @apiParam {String} status  status of the todo ('open' || 'closed')
  * @apiSuccess {String} result 0: if not saved, 1: if saved
  * @apiSuccess {String} message return message
  * @apiVersion 0.1.0
@@ -32,6 +31,9 @@ router.route('/todos/add')
 		var todo = new Todo();
 		todo.description = req.body.description;
 		todo.status = 'open';
+		var passedJson = validateJson(todo.description, todo.status);
+		if (passedJson.result === 1) {
+		// add the new todo
 		todo.save(function(err) {
 			if (err) {
 				res.send(err);
@@ -39,6 +41,9 @@ router.route('/todos/add')
 				res.json({result: 1, message: 'Todo saved!'});
 			}
 		});
+		} else {
+			res.send(passedJson);
+		}
 	});
 
 	/**
@@ -92,13 +97,18 @@ router.route('/todos/:todo_id/update')
 				}
 				todo.description = req.body.description;  // update the todos info
 				todo.status = req.body.status;
-			// save the todo
-				todo.save(function(err) {
-					if (err) {
-						res.send(err);
-					}
-					res.json({result: 1, message: 'Todo updated!'});
-				});
+				var passedJson = validateJson(todo.description, todo.status);
+				if (passedJson.result === 1) {
+					// update the todo
+					todo.save(function(err) {
+						if (err) {
+							res.send(err);
+						}
+						res.json({result: 1, message: 'Todo updated!'});
+					});
+				} else {
+					res.send(passedJson);
+				}
 			});
 		});
 
@@ -138,3 +148,17 @@ db.on('error', function(error) {
 db.once('open', function() {
 	console.log('db.connect.success');
 });
+
+function validateJson(description, status){
+	var checkStatus = status === undefined ||
+									(status !== 'open' && status !== 'closed');
+	var passedJson = {};
+	if (description === undefined || description === '') {
+		passedJson = {result: 0, message: 'Missing Description!'};
+	} else if (checkStatus) {
+		passedJson = {result: 0, message: 'Missing/Wrong status!'};
+	} else {
+		passedJson = {result: 1};
+	}
+	return passedJson;
+}
