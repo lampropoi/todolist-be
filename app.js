@@ -13,10 +13,13 @@ app.use(bodyParser.json());
 var port = process.env.PORT || 8080;
 
 var router = express.Router();
-/* Routes for our API */
 
-router.route('/todos')
-// create a new todo
+/* ****************** */
+/* Routes for our API */
+/* ****************** */
+
+// Create a new todo
+router.route('/todos/add')
 	.post(function(req, res) {
 		var todo = new Todo();
 		todo.description = req.body.description;
@@ -25,11 +28,13 @@ router.route('/todos')
 			if (err) {
 				res.send(err);
 			} else {
-				res.json({message: 'Duty saved!'});
+				res.json({message: 'Todo saved!'});
 			}
 		});
-	})
-		// get all todos
+	});
+
+	// Get all todos
+router.route('/todos/all')
 		.get(function(req, res) {
 			Todo.find(function(err, todos) {
 				if (err) {
@@ -40,8 +45,8 @@ router.route('/todos')
 			});
 		});
 
+	// Get the todo with that id
 router.route('/todos/:todo_id')
-// get the todo with that id
 	.get(function(req, res) {
 		Todo.findById(req.params.todo_id, function(err, todo) {
 			if (err) {
@@ -50,9 +55,11 @@ router.route('/todos/:todo_id')
 				res.json(todo);
 			}
 		});
-	})
-		.put(function(req, res) {
-	// use our todo model to find the todo we want
+	});
+
+	// Update the todo with that id
+router.route('/todos/:todo_id/update')
+		.post(function(req, res) {
 			Todo.findById(req.params.todo_id, function(err, todo) {
 				if (err) {
 					res.send(err);
@@ -67,9 +74,11 @@ router.route('/todos/:todo_id')
 					res.json({message: 'Todo updated!'});
 				});
 			});
-		})
-	// delete the todo with this id
-	.delete(function(req, res) {
+		});
+
+	// Delete the todo with this id
+router.route('/todos/:todo_id/delete')
+	.post(function(req, res) {
 		Todo.remove({
 			_id: req.params.todo_id
 		}, function(err, todo) {
@@ -80,15 +89,8 @@ router.route('/todos/:todo_id')
 		});
 	});
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
-	res.json({message: 'hooray! welcome to our api!'});
-});
-
-// more routes for our API will happen here
-
 // REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
+// all of our routes will be prefixed with /v1
 app.use('/v1', router);
 
 // START THE SERVER
