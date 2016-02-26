@@ -18,7 +18,15 @@ var router = express.Router();
 /* Routes for our API */
 /* ****************** */
 
-// Create a new todo
+/**
+ * [Add a new todo in the list]
+ * @api  {post} /todos/add Add a new todo in the list
+ * @apiParam {String} description The description of the todo
+ * @apiParam {String} status  status of the todo ('open' || 'closed')
+ * @apiSuccess {String} result 0: if not saved, 1: if saved
+ * @apiSuccess {String} message return message
+ * @apiVersion 0.1.0
+ */
 router.route('/todos/add')
 	.post(function(req, res) {
 		var todo = new Todo();
@@ -28,12 +36,17 @@ router.route('/todos/add')
 			if (err) {
 				res.send(err);
 			} else {
-				res.json({message: 'Todo saved!'});
+				res.json({result: 1, message: 'Todo saved!'});
 			}
 		});
 	});
 
-	// Get all todos
+	/**
+	 * [Get the todo list]
+	 * @api  {get} /todos/all Get the todo list
+	 * @apiSuccess {Object} A json object with all todos
+	 * @apiVersion 0.1.0
+	 */
 router.route('/todos/all')
 		.get(function(req, res) {
 			Todo.find(function(err, todos) {
@@ -45,7 +58,12 @@ router.route('/todos/all')
 			});
 		});
 
-	// Get the todo with that id
+		/**
+		 * [Get the todo with that id]
+		 * @api  {get} /todos/:todo_id Get the todo with that id
+		 * @apiSuccess {Object} A json object with the requested todo
+		 * @apiVersion 0.1.0
+		 */
 router.route('/todos/:todo_id')
 	.get(function(req, res) {
 		Todo.findById(req.params.todo_id, function(err, todo) {
@@ -57,7 +75,15 @@ router.route('/todos/:todo_id')
 		});
 	});
 
-	// Update the todo with that id
+	/**
+	 * [Update the todo with that id]
+	 * @api  {post} /todos/:todo_id/update Update the todo with that id
+	 * @apiParam {String} description The description of the todo
+	 * @apiParam {String} status  status of the todo ('open' || 'closed')
+	 * @apiSuccess {String} result 0: if not updated, 1: if updated
+	 * @apiSuccess {String} message return message
+	 * @apiVersion 0.1.0
+	 */
 router.route('/todos/:todo_id/update')
 		.post(function(req, res) {
 			Todo.findById(req.params.todo_id, function(err, todo) {
@@ -71,12 +97,17 @@ router.route('/todos/:todo_id/update')
 					if (err) {
 						res.send(err);
 					}
-					res.json({message: 'Todo updated!'});
+					res.json({result: 1, message: 'Todo updated!'});
 				});
 			});
 		});
 
-	// Delete the todo with this id
+		/**
+		 * [Delete the todo with that id]
+		 * @api  {post} /todos/:todo_id/delete Delete the todo with that id
+		 * @apiSuccess {String} result 0: if not deleted, 1: if deleted
+		 * @apiSuccess {String} message return message
+		 */
 router.route('/todos/:todo_id/delete')
 	.post(function(req, res) {
 		Todo.remove({
@@ -85,7 +116,7 @@ router.route('/todos/:todo_id/delete')
 			if (err) {
 				res.send(err);
 			}
-			res.json({message: 'Successfully deleted'});
+			res.json({result: 1, message: 'Todo deleted!'});
 		});
 	});
 

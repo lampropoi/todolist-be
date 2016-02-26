@@ -7,6 +7,7 @@
     "url": "https://github.com/lampropoi/todolist-be/issues"
   },
   "dependencies": {
+    "apidoc": "^0.15.1",
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "mongoose": "^4.4.5"
@@ -25,7 +26,8 @@
   },
   "scripts": {
     "test": "eslint",
-    "start": "nodemon ./app.js localhost 8080"
+    "start": "nodemon ./app.js localhost 8080",
+    "apidoc": "apidoc -f 'app.js$' ./ -o ./doc"
   },
   "devDependencies": {
     "eslint": "^2.2.0",
