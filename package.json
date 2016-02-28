@@ -12,11 +12,13 @@
     "express": "^4.13.4",
     "mongoose": "^4.4.5"
   },
-  "devDependencies":{
+  "devDependencies": {
+    "eslint": "^2.2.0",
+    "eslint-config-google": "^0.4.0",
     "jasmine-core": "^2.4.1",
-    "karma": "^0.13.21",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma-jasmine": "^0.3.7"
+    "jasmine-node": "^1.14.5",
+    "nodemon": "^1.9.0",
+    "request": "^2.69.0"
   },
   "homepage": "https://github.com/lampropoi/todolist-be#readme",
   "keywords": [
@@ -32,13 +34,7 @@
   },
   "scripts": {
     "test": "eslint",
-    "karmatest": "./node_modules/karma/bin/karma start karma.conf.js",
     "start": "nodemon ./app.js localhost 8080",
     "apidoc": "apidoc -f 'app.js$' ./ -o ./doc"
-  },
-  "devDependencies": {
-    "eslint": "^2.2.0",
-    "eslint-config-google": "^0.4.0",
-    "nodemon": "^1.9.0"
   }
 }
