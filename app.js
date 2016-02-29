@@ -23,6 +23,7 @@ var router = express.Router();
  * @api  {post} /todos/add Add a new todo in the list
  * @apiParam {String} description The description of the todo
  * @apiSuccess {String} result 0: if not saved, 1: if saved
+ * @apiSuccess {String} id id of saved todo
  * @apiSuccess {String} message return message
  * @apiVersion 0.1.0
  */
@@ -34,11 +35,11 @@ router.route('/todos/add')
 		var passedJson = validateJson(todo.description, todo.status);
 		if (passedJson.result === 1) {
 		// add the new todo
-		todo.save(function(err) {
+		todo.save(function(err, data) {
 			if (err) {
 				res.send(err);
 			} else {
-				res.json({result: 1, message: 'Todo saved!'});
+				res.json({result: 1, id: data.id, message: 'Todo saved!'});
 			}
 		});
 		} else {
@@ -162,3 +163,7 @@ function validateJson(description, status){
 	}
 	return passedJson;
 }
+
+exports.closeServer = function(){
+	app.close();
+};

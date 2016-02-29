@@ -15,8 +15,8 @@
   "devDependencies": {
     "eslint": "^2.2.0",
     "eslint-config-google": "^0.4.0",
-    "jasmine-core": "^2.4.1",
     "jasmine-node": "^1.14.5",
+    "lodash": "^4.5.1",
     "nodemon": "^1.9.0",
     "request": "^2.69.0"
   },
@@ -33,7 +33,8 @@
     "url": "git+ssh://git@github.com/lampropoi/todolist-be.git"
   },
   "scripts": {
-    "test": "eslint",
+    "jasmine": "jasmine-node test",
+    "test": "eslint app.js",
     "start": "nodemon ./app.js localhost 8080",
     "apidoc": "apidoc -f 'app.js$' ./ -o ./doc"
   }
