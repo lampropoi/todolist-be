@@ -1,7 +1,6 @@
-//require("../../app.js");
 var request = require("request");
 require("../commonMatchers.js");
-var baseUrl = "http://localhost:8080/v1/todos/add"
+var baseUrl = "http://localhost:8080/v1/todos/add";
 
 describe("Add a new todo", function() {
 		it('Adds a new todo when valid data are sent', function(done) {
@@ -10,10 +9,9 @@ describe("Add a new todo", function() {
 				status: 'open'
 			};
 			request.post(baseUrl, {form: data} , function(error, response, body) {
-			body = (JSON.parse(body));
-			console.log(body.id);
-			expect(body.result).toBe(1);
-			done();
+				body = (JSON.parse(body));
+				expect(body.result).toBe(1);
+				done();
 			});
 		});
 //validations
@@ -22,9 +20,9 @@ describe("Add a new todo", function() {
 				status: 'open'
 			};
 			request.post(baseUrl, {form: data} , function(error, response, body) {
-			body = (JSON.parse(body));
-			expect(body.result).toBe(0);
-			done();
+				body = (JSON.parse(body));
+				expect(body.result).toBe(0);
+				done();
 			});
 		});
 
@@ -35,9 +33,9 @@ describe("Add a new todo", function() {
 				status: 'open'
 			};
 			request.post(baseUrl, {form: data} , function(error, response, body) {
-			body = (JSON.parse(body));
-			expect(body.result).toBe(0);
-			done();
+				body = (JSON.parse(body));
+				expect(body.result).toBe(0);
+				done();
 			});
 		});
 
@@ -46,9 +44,9 @@ describe("Add a new todo", function() {
 				description: 'Go for a walk'
 			};
 			request.post(baseUrl, {form: data} , function(error, response, body) {
-			body = (JSON.parse(body));
-			expect(body.result).toBe(1);
-			done();
+				body = (JSON.parse(body));
+				expect(body.result).toBe(1);
+				done();
 			});
 		});
 
@@ -58,9 +56,9 @@ describe("Add a new todo", function() {
 				status: 'pending'
 			};
 			request.post(baseUrl, {form: data} , function(error, response, body) {
-			body = (JSON.parse(body));
-			expect(body.result).toBe(1);
-			done();
+				body = (JSON.parse(body));
+				expect(body.result).toBe(1);
+				done();
 			});
 		});
 });

@@ -72,13 +72,17 @@ router.route('/todos/all')
 		 */
 router.route('/todos/:todo_id')
 	.get(function(req, res) {
-		Todo.findById(req.params.todo_id, function(err, todo) {
-			if (err) {
-				res.send(err);
-			} else {
-				res.json(todo);
-			}
-		});
+		if (!req.params.todo_id.match(/^[0-9a-fA-F]{24}$/)) {
+			res.json({result: 0, message: 'Id is invalid'});
+		} else {
+			Todo.findById(req.params.todo_id, function(err, todo) {
+				if (err) {
+					res.send(err);
+				} else {
+					res.json(todo);
+				}
+			});
+		}
 	});
 
 	/**
@@ -92,25 +96,33 @@ router.route('/todos/:todo_id')
 	 */
 router.route('/todos/:todo_id/update')
 		.post(function(req, res) {
-			Todo.findById(req.params.todo_id, function(err, todo) {
-				if (err) {
-					res.send(err);
-				}
-				todo.description = req.body.description;  // update the todos info
-				todo.status = req.body.status;
-				var passedJson = validateJson(todo.description, todo.status);
-				if (passedJson.result === 1) {
-					// update the todo
-					todo.save(function(err) {
-						if (err) {
-							res.send(err);
+			if (!req.params.todo_id.match(/^[0-9a-fA-F]{24}$/)) {
+				res.json({result: 0, message: 'Id is invalid'});
+			} else {
+				Todo.findById(req.params.todo_id, function(err, todo) {
+					if (err) {
+						res.send(err);
+					}
+					if (!todo) {
+						res.json({result: 0, message: 'Id not found!'});
+					} else {
+						todo.description = req.body.description;  // update the todos info
+						todo.status = req.body.status;
+						var passedJson = validateJson(todo.description, todo.status);
+						if (passedJson.result === 1) {
+							// update the odo
+							todo.save(function(err) {
+								if (err) {
+									res.send(err);
+								}
+								res.json({result: 1, message: 'Todo updated!'});
+							});
+						} else {
+							res.send(passedJson);
 						}
-						res.json({result: 1, message: 'Todo updated!'});
-					});
-				} else {
-					res.send(passedJson);
-				}
-			});
+					}
+				});
+			}
 		});
 
 		/**
@@ -121,14 +133,21 @@ router.route('/todos/:todo_id/update')
 		 */
 router.route('/todos/:todo_id/delete')
 	.post(function(req, res) {
-		Todo.remove({
-			_id: req.params.todo_id
-		}, function(err, todo) {
-			if (err) {
-				res.send(err);
-			}
-			res.json({result: 1, message: 'Todo deleted!'});
-		});
+		if (!req.params.todo_id.match(/^[0-9a-fA-F]{24}$/)) {
+			res.json({result: 0, message: 'Id is invalid'});
+		} else {
+			Todo.remove({
+				_id: req.params.todo_id
+			}, function(err, data) {
+				if (err) {
+					res.send(err);
+				} else if (data.result.n !== 1 ) {
+					res.json({result: 0, message: 'Id not found!'});
+				} else {
+					res.json({result: 1, message: 'Todo deleted!'});
+				}
+			});
+		}
 	});
 
 // REGISTER OUR ROUTES -------------------------------

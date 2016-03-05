@@ -1,4 +1,3 @@
-//require("../../app.js");
 var request = require("request");
 require("../commonMatchers.js");
 require("../customMatchers.js");
@@ -9,8 +8,8 @@ describe("Get all todos", function() {
 		it('returns 200 OK', function(done) {
 			request.get(baseUrl, function(error, response, body) {
 			body = (JSON.parse(body));
-			expect(body).toBeListOf('Todos');
 			expect(response.statusCode).toBe(200);
+			expect(body).toBeListOf('Todos');
 			done();
 			});
 		});
