@@ -23,7 +23,6 @@ describe("Update a todo", function() {
 				};
 			request.post(updateUrl, {form: dataUpdate}, function(error, response, body) {
 				body = (JSON.parse(body));
-				console.log(body);
 				expect(response.statusCode).toBe(200);
 				expect(body.result).toBe(1);
 				done();
